@@ -11,5 +11,7 @@ public class ViidenSuora {
         System.out.println("Kolmas pushaustesti");
         
         System.out.println("Eka Clonetesti // Maaku");
+        
+        System.out.println("compiletesti");
     }
 }
