@@ -40,6 +40,7 @@ public class Peli {
                 }
                 if (j == 2) {                   // Samoin j = n-1
                     System.out.print("|");
+                    
                 }
             }
         }
