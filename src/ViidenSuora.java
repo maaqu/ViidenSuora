@@ -15,5 +15,10 @@ public class ViidenSuora {
         System.out.println("Eka Clonetesti // Maaku");
         
         System.out.println("compiletesti");
+        
+        int[][] lauta = { {1, 2, 3}, {4, 5, 6}, {7, 8, 9} };
+        
+        Pelitulostin geimi = new Pelitulostin(lauta);
+        geimi.tulosta();
     }
 }
