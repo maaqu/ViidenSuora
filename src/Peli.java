@@ -1,47 +1,119 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
-/**
- *
- * @author Maaku
- */
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class Peli {
 
-    int[][] pelilauta;
-    
+    private char[][] pelilauta;
+    char pelaaja;
+    public static final char X = 'X';
+    public static final char O = 'O';
+    public static final char TYHJA = ' ';
+    public static final int KOKO = 3; // muutettavissa kysyttäväksi; => n
 
     public Peli() {
 
-        pelilauta = new int[3][3];
+        pelilauta = new char[KOKO][KOKO];
+
+        for (int i = 0; i < pelilauta.length; i++) {
+            for (int j = 0; j < pelilauta[i].length; j++) {
+                pelilauta[i][j] = TYHJA;
+            }
+        }
+        pelaaja = X;
     }
 
-    public void setRuutu(int i, int j, int merkki) {
-        if (merkki == 1) {
-            pelilauta[i][j] = 1;
-        } else if (merkki == 2) {
-            pelilauta[i][j] = 2;
+    public boolean setRuutu(int vaaka, int pysty, char pelaaja) {
+        if (pelilauta[vaaka][pysty] == TYHJA) {
+            pelilauta[vaaka][pysty] = pelaaja;
+            return true;
         } else {
+            return false;
         }
     }
 
     public void tulosta() {
-        for (int i = 0; i < 3; i++) { // Tässä tapauksessa i < 3, laudan kokoa voidaan muuttaa myöhemmin ja sitoa muuttujaan, jolloin i < n
-            System.out.println("");
-            for (int j = 0; j < 3; j++) {
-                System.out.print("|");
-                if (pelilauta[i][j] == 1) {
-                    System.out.print("o");
-                } else if (pelilauta[i][j] == 2) {
-                    System.out.print("x");
-                } else {
-                    System.out.print(" ");
-                }
-                if (j == 2) {                   // Samoin j = n-1
+        System.out.println("  0   1   2");
+        for (int i = 0; i < KOKO; i++) {
+            for (int j = 0; j < KOKO; j++) {
+                if (j == 0)
+                    System.out.print(i);
+                System.out.print(" " + pelilauta[i][j] + " ");
+                if (j < 2) {
                     System.out.print("|");
-                    
                 }
+            }
+            System.out.println();
+            System.out.println(" ---+---+---");
+        }
+
+    }
+
+    char voittiko() {
+
+        if (pelilauta[1][0] == pelilauta[0][0] && pelilauta[1][0] == pelilauta[2][0]) {
+            return pelilauta[1][0];
+        }
+        if (pelilauta[1][1] == pelilauta[0][1] && pelilauta[1][1] == pelilauta[2][1]) {
+            return pelilauta[1][1];
+        }
+        if (pelilauta[1][2] == pelilauta[0][2] && pelilauta[1][2] == pelilauta[2][2]) {
+            return pelilauta[1][2];
+        }
+        if (pelilauta[0][1] == pelilauta[0][0] && pelilauta[0][0] == pelilauta[0][2]) {
+            return pelilauta[0][0];
+        }
+        if (pelilauta[1][1] == pelilauta[1][0] && pelilauta[1][0] == pelilauta[1][2]) {
+            return pelilauta[1][1];
+        }
+        if (pelilauta[2][1] == pelilauta[2][0] && pelilauta[2][0] == pelilauta[2][2]) {
+            return pelilauta[2][0];
+        }
+        if (pelilauta[0][0] == pelilauta[1][1] && pelilauta[0][0] == pelilauta[2][2]) {
+            return pelilauta[0][0];
+        }
+        if (pelilauta[0][2] == pelilauta[1][1] && pelilauta[0][2] == pelilauta[2][0]) {
+            return pelilauta[0][2];
+        }
+        
+        return TYHJA;           
+    }
+
+    public void pelaa() {
+        boolean pelaako = true;
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        while (pelaako) {
+
+            try {
+                boolean kelpaavaSiirto = false;
+                while (!kelpaavaSiirto) {     // kysytään koordinaatteja kunnes saadaan pelialueella oleva paikka
+                    tulosta();
+                    System.out.println("Pelaaja: " + pelaaja);
+                    System.out.println("Mikä rivi ");
+                    int vaaka = new Integer(in.readLine());
+                    System.out.println("Mikä sarake ");
+                    int pysty = new Integer(in.readLine());
+
+                    kelpaavaSiirto = setRuutu(vaaka, pysty, pelaaja);
+                    if (!pelaako) {
+                        System.out.println("Väärä siirto");
+                    }
+                }
+
+
+                if (pelaaja == X) {         // pelaaja vaihtuu
+                    pelaaja = O;
+                } else {
+                    pelaaja = X;
+                }
+                if (this.voittiko() != TYHJA) {
+                    tulosta();
+                    System.out.println("Voittaja : " + this.voittiko());
+                    return;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
