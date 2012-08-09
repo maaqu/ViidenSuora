@@ -11,6 +11,7 @@ public class Peli {
     public static final char O = 'O';
     public static final char TYHJA = ' ';
     public static final int KOKO = 3; // muutettavissa kysyttäväksi; => n
+    public static int vuoro;
 
     public Peli() {
 
@@ -21,12 +22,14 @@ public class Peli {
                 pelilauta[i][j] = TYHJA;
             }
         }
+        vuoro = 0;
         pelaaja = X;
     }
 
     public boolean setRuutu(int vaaka, int pysty, char pelaaja) {
         if (pelilauta[vaaka][pysty] == TYHJA) {
             pelilauta[vaaka][pysty] = pelaaja;
+            vuoro++;
             return true;
         } else {
             return false;
@@ -52,6 +55,8 @@ public class Peli {
 
     char voittiko() {
 
+        if (vuoro == KOKO*KOKO)
+            return 't';
         if (pelilauta[1][0] == pelilauta[0][0] && pelilauta[1][0] == pelilauta[2][0]) {
             return pelilauta[1][0];
         }
@@ -107,9 +112,14 @@ public class Peli {
                 } else {
                     pelaaja = X;
                 }
-                if (this.voittiko() != TYHJA) {
+                if (this.voittiko() == 'X' || this.voittiko() == 'O') {
                     tulosta();
                     System.out.println("Voittaja : " + this.voittiko());
+                    return;
+                }
+                if (this.voittiko() == 't') {
+                    tulosta();
+                    System.out.println("Tasapeli");
                     return;
                 }
             } catch (IOException e) {
