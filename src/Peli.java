@@ -1,4 +1,4 @@
-
+import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,6 +12,7 @@ public class Peli {
     public static final char TYHJA = ' ';
     public static final int KOKO = 3; // muutettavissa kysyttäväksi; => n
     public static int vuoro;
+    private Scanner reader = new Scanner(System.in);
 
     public Peli() {
 
@@ -96,9 +97,9 @@ public class Peli {
                     tulosta();
                     System.out.println("Pelaaja: " + pelaaja);
                     System.out.println("Mikä rivi ");
-                    int vaaka = new Integer(in.readLine());
+                    int vaaka = reader.nextInt();
                     System.out.println("Mikä sarake ");
-                    int pysty = new Integer(in.readLine());
+                    int pysty = reader.nextInt();
 
                     kelpaavaSiirto = setRuutu(vaaka, pysty, pelaaja);
                     if (!pelaako) {
