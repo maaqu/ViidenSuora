@@ -1,4 +1,4 @@
-import java.util.Scanner;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,7 +12,6 @@ public class Peli {
     public static final char TYHJA = ' ';
     public static final int KOKO = 3; // muutettavissa kysyttäväksi; => n
     public static int vuoro;
-    private Scanner reader = new Scanner(System.in);
 
     public Peli() {
 
@@ -41,8 +40,9 @@ public class Peli {
         System.out.println("  0   1   2");
         for (int i = 0; i < KOKO; i++) {
             for (int j = 0; j < KOKO; j++) {
-                if (j == 0)
+                if (j == 0) {
                     System.out.print(i);
+                }
                 System.out.print(" " + pelilauta[i][j] + " ");
                 if (j < 2) {
                     System.out.print("|");
@@ -56,8 +56,7 @@ public class Peli {
 
     char voittiko() {
 
-        if (vuoro == KOKO*KOKO)
-            return 't';
+
         if (pelilauta[1][0] == pelilauta[0][0] && pelilauta[1][0] == pelilauta[2][0]) {
             return pelilauta[1][0];
         }
@@ -82,8 +81,11 @@ public class Peli {
         if (pelilauta[0][2] == pelilauta[1][1] && pelilauta[0][2] == pelilauta[2][0]) {
             return pelilauta[0][2];
         }
-        
-        return TYHJA;           
+        if (vuoro == KOKO * KOKO) {
+            return 't';
+        }
+
+        return TYHJA;
     }
 
     public void pelaa() {
@@ -97,9 +99,9 @@ public class Peli {
                     tulosta();
                     System.out.println("Pelaaja: " + pelaaja);
                     System.out.println("Mikä rivi ");
-                    int vaaka = reader.nextInt();
+                    int vaaka = new Integer(in.readLine());
                     System.out.println("Mikä sarake ");
-                    int pysty = reader.nextInt();
+                    int pysty = new Integer(in.readLine());
 
                     kelpaavaSiirto = setRuutu(vaaka, pysty, pelaaja);
                     if (!pelaako) {
