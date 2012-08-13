@@ -29,7 +29,9 @@ public class Testi {
     public void asetaMatriisiin() {
         
     }
-    
+    /**
+     * 
+     */
     public void kayLapi() { //tänne tullaan jostain päämetodista
         for(int r=0; r < todellinen.KOKO; r++) {
             for(int s=0; s<todellinen.KOKO; s++) {

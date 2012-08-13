@@ -35,6 +35,50 @@ public class Peli {
             return false;
         }
     }
+    public int risti(char[][] lauta) {
+        if (voittiko() != TYHJA) {
+            if (voittiko() == 'X')
+                return 1;
+            if (voittiko() == 'O')
+                return -1;
+            return 0;
+        }
+        int mybest = Integer.MIN_VALUE;
+        for (int m = 0; m < KOKO; m++) {
+            for (int n = 0; n < KOKO; n++) {
+                if (pelilauta[m][n] == TYHJA) {
+                    pelilauta[m][n] = 'X';
+                    int newval = nolla(pelilauta);
+                    if (newval > mybest)
+                        mybest = newval;
+                }
+                    
+            }
+        }
+        return mybest;
+    }
+    public int nolla(char[][] lauta) {
+               if (voittiko() != TYHJA) {
+            if (voittiko() == 'X')
+                return 1;
+            if (voittiko() == 'O')
+                return -1;
+            return 0;
+        }
+        int myworst = Integer.MAX_VALUE;
+        for (int m = 0; m < KOKO; m++) {
+            for (int n = 0; n < KOKO; n++) {
+                if (pelilauta[m][n] == TYHJA) {
+                    pelilauta[m][n] = 'O';
+                    int newval = risti(pelilauta);
+                    if (newval > myworst)
+                        myworst = newval;
+                }
+                    
+            }
+        }
+        return myworst;
+    }
 
     public void tulosta() {
         System.out.println("  0   1   2");
