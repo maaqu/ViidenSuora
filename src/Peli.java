@@ -97,68 +97,6 @@ public class Peli {
 
     }
 
-public int risti(char[][] lauta) {
-        if (voittiko() != TYHJA) {
-            if (voittiko() == 'X')
-                return 1;
-            if (voittiko() == 'O')
-                return -1;
-            return 0;
-        }
-        int mybest = Integer.MIN_VALUE;
-        for (int m = 0; m < KOKO; m++) {
-            for (int n = 0; n < KOKO; n++) {
-                if (pelilauta[m][n] == TYHJA) {
-                    pelilauta[m][n] = 'X';
-                    int newval = nolla(pelilauta);
-                    if (newval > mybest)
-                        mybest = newval;
-                }
-                    
-            }
-        }
-        return mybest;
-    }
-    public int nolla(char[][] lauta) {
-               if (voittiko() != TYHJA) {
-            if (voittiko() == 'X')
-                return 1;
-            if (voittiko() == 'O')
-                return -1;
-            return 0;
-        }
-        int myworst = Integer.MAX_VALUE;
-        for (int m = 0; m < KOKO; m++) {
-            for (int n = 0; n < KOKO; n++) {
-                if (pelilauta[m][n] == TYHJA) {
-                    pelilauta[m][n] = 'O';
-                    int newval = risti(pelilauta);
-                    if (newval > myworst)
-                        myworst = newval;
-                }
-                    
-            }
-        }
-        return myworst;
-    }
-
-    public void tulosta() {
-        System.out.println("  0   1   2");
-        for (int i = 0; i < KOKO; i++) {
-            for (int j = 0; j < KOKO; j++) {
-                if (j == 0) {
-                    System.out.print(i);
-                }
-                System.out.print(" " + pelilauta[i][j] + " ");
-                if (j < 2) {
-                    System.out.print("|");
-                }
-            }
-            System.out.println();
-            System.out.println(" ---+---+---");
-        }
-
-    }
 
     char voittiko() {
 
