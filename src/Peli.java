@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 
 public class Peli {
 
-    private char[][] pelilauta;
+    public char[][] pelilauta;
     char pelaaja;
     public static final char X = 'X';
     public static final char O = 'O';
