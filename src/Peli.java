@@ -1,3 +1,4 @@
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -34,12 +35,15 @@ public class Peli {
             return false;
         }
     }
+
     public int risti(char[][] lauta) {
         if (voittiko() != TYHJA) {
-            if (voittiko() == 'X')
+            if (voittiko() == 'X') {
                 return 1;
-            if (voittiko() == 'O')
+            }
+            if (voittiko() == 'O') {
                 return -1;
+            }
             return 0;
         }
         int mybest = Integer.MIN_VALUE;
@@ -48,20 +52,24 @@ public class Peli {
                 if (pelilauta[m][n] == TYHJA) {
                     pelilauta[m][n] = 'X';
                     int newval = nolla(pelilauta);
-                    if (newval > mybest)
+                    if (newval > mybest) {
                         mybest = newval;
+                    }
                 }
-                    
+
             }
         }
         return mybest;
     }
+
     public int nolla(char[][] lauta) {
-               if (voittiko() != TYHJA) {
-            if (voittiko() == 'X')
+        if (voittiko() != TYHJA) {
+            if (voittiko() == 'X') {
                 return 1;
-            if (voittiko() == 'O')
+            }
+            if (voittiko() == 'O') {
                 return -1;
+            }
             return 0;
         }
         int myworst = Integer.MAX_VALUE;
@@ -70,10 +78,11 @@ public class Peli {
                 if (pelilauta[m][n] == TYHJA) {
                     pelilauta[m][n] = 'O';
                     int newval = risti(pelilauta);
-                    if (newval > myworst)
+                    if (newval > myworst) {
                         myworst = newval;
+                    }
                 }
-                    
+
             }
         }
         return myworst;
@@ -96,7 +105,6 @@ public class Peli {
         }
 
     }
-
 
     char voittiko() {
 
