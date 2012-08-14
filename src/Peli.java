@@ -88,10 +88,11 @@ public class Peli {
         return myworst;
     }
     
-    public int minimaxi(char[][] lauta) {
+    public int[][] minimaxi(char[][] lauta) {
+        
         int parasArvo = Integer.MAX_VALUE;
         int index = 0;
-        int[] parasSiirto = new int[9];
+        int[][] parasSiirto = new int[1][2]; // väliaikainen, tietokone päätyy aina ensimmäiseen löydettyyn parhaaseen
         for (int i = 0; i < KOKO; i++) {
             for (int j = 0; j < KOKO; j++) {
                 if (lauta[i][j] == TYHJA) {
@@ -100,9 +101,10 @@ public class Peli {
                     if (arvo < parasArvo) {
                         parasArvo = arvo;
                         index = 0;
-                        parasSiirto[index] = i;
-                    } else if (arvo == parasArvo)
-                        parasSiirto[index++] = arvo;
+                        parasSiirto[0][0] = i;
+                        parasSiirto[0][1] = j;
+//                    } else if (arvo == parasArvo)         | ks. ylös
+//                        parasSiirto[index++] = arvo;
                     lauta[i][j] = TYHJA;
                 }
             }
@@ -110,10 +112,11 @@ public class Peli {
                 
             
         }
-        if (index > 0)
-                index = (int)Math.random()%index;
-            return parasSiirto[index];
+//        if (index > 0)
+//                index = (int)Math.random()%index;         | ks. ylös
+            
         
+    }return parasSiirto;
     }
 
     public void tulosta() {
@@ -171,7 +174,8 @@ public class Peli {
     public void pelaa() {
         boolean pelaako = true;
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        while (pelaako) {
+        while (pelaako) { 
+            if (pelaaja == X) {
             
             try {
                 boolean kelpaavaSiirto = false;
@@ -187,14 +191,11 @@ public class Peli {
                     if (!pelaako) {
                         System.out.println("Väärä siirto");
                     }
-                }
+                } 
+            
 
 
-                if (pelaaja == X) {         // pelaaja vaihtuu
-                    pelaaja = O;
-                } else {
-                    pelaaja = X;
-                }
+                
                 if (this.voittiko() == 'X' || this.voittiko() == 'O') {
                     tulosta();
                     System.out.println("Voittaja : " + this.voittiko());
@@ -208,6 +209,14 @@ public class Peli {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
+            
+            }
+            if (pelaaja == X) {         // pelaaja vaihtuu
+                    pelaaja = O;
+                } else {
+                    pelaaja = X;
+                } 
+                  //  setRuutu(jotain, jatka tästä) 
+                        }
     }
 }
