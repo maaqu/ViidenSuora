@@ -54,7 +54,7 @@ public class Peli {
                     int newval = nolla(pelilauta);
                     if (newval > mybest) {
                         mybest = newval;
-                    }
+                    } 
                 }
 
             }
@@ -86,6 +86,34 @@ public class Peli {
             }
         }
         return myworst;
+    }
+    
+    public int minimaxi(char[][] lauta) {
+        int parasArvo = Integer.MAX_VALUE;
+        int index = 0;
+        int[] parasSiirto = new int[9];
+        for (int i = 0; i < KOKO; i++) {
+            for (int j = 0; j < KOKO; j++) {
+                if (lauta[i][j] == TYHJA) {
+                    lauta[i][j] = 'O';
+                    int arvo = risti(lauta);
+                    if (arvo < parasArvo) {
+                        parasArvo = arvo;
+                        index = 0;
+                        parasSiirto[index] = i;
+                    } else if (arvo == parasArvo)
+                        parasSiirto[index++] = arvo;
+                    lauta[i][j] = TYHJA;
+                }
+            }
+            
+                
+            
+        }
+        if (index > 0)
+                index = (int)Math.random()%index;
+            return parasSiirto[index];
+        
     }
 
     public void tulosta() {
@@ -144,7 +172,7 @@ public class Peli {
         boolean pelaako = true;
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         while (pelaako) {
-
+            
             try {
                 boolean kelpaavaSiirto = false;
                 while (!kelpaavaSiirto) {     // kysytään koordinaatteja kunnes saadaan pelialueella oleva paikka
