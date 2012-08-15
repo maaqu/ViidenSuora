@@ -38,10 +38,10 @@ public class Peli {
 
     public int risti(char[][] lauta) {
         if (voittiko() != TYHJA) {
-            if (voittiko() == 'X') {
+            if (voittiko() == X) {
                 return 1;
             }
-            if (voittiko() == 'O') {
+            if (voittiko() == O) {
                 return -1;
             }
             return 0;
@@ -50,11 +50,11 @@ public class Peli {
         for (int m = 0; m < KOKO; m++) {
             for (int n = 0; n < KOKO; n++) {
                 if (pelilauta[m][n] == TYHJA) {
-                    pelilauta[m][n] = 'X';
+                    pelilauta[m][n] = O;
                     int newval = nolla(pelilauta);
                     if (newval > mybest) {
                         mybest = newval;
-                    }
+                    } lauta[m][n] = TYHJA;
                 }
 
             }
@@ -64,10 +64,10 @@ public class Peli {
 
     public int nolla(char[][] lauta) {
         if (voittiko() != TYHJA) {
-            if (voittiko() == 'X') {
+            if (voittiko() == X) {
                 return 1;
             }
-            if (voittiko() == 'O') {
+            if (voittiko() == O) {
                 return -1;
             }
             return 0;
@@ -76,11 +76,12 @@ public class Peli {
         for (int m = 0; m < KOKO; m++) {
             for (int n = 0; n < KOKO; n++) {
                 if (pelilauta[m][n] == TYHJA) {
-                    pelilauta[m][n] = 'O';
+                    pelilauta[m][n] = X;
                     int newval = risti(pelilauta);
                     if (newval > myworst) {
                         myworst = newval;
                     }
+                    lauta[m][n] = TYHJA;
                 }
 
             }
@@ -96,15 +97,15 @@ public class Peli {
         for (int i = 0; i < KOKO; i++) {
             for (int j = 0; j < KOKO; j++) {
                 if (lauta[i][j] == TYHJA) {
-                    lauta[i][j] = 'O';
+                    lauta[i][j] = O;
                     int arvo = risti(lauta);
                     if (arvo < parasArvo) {
                         parasArvo = arvo;
                         index = 0;
                         parasSiirto[index] = new Sijainti(i, j);
-                    } else if (arvo == parasArvo) {
+                    } else if (arvo == parasArvo) 
                         parasSiirto[index++] = new Sijainti(i, j);
-                    }
+                    
                     lauta[i][j] = TYHJA;
                 }
             }
@@ -119,6 +120,29 @@ public class Peli {
         return parasSiirto[index];
 
     }
+    
+//    public int minmax(char pelaaja, char[][] lauta) {
+//        if (voittiko() != TYHJA) {
+//            if (voittiko() == X) {
+//                return 1;
+//            }
+//            if (voittiko() == O) {
+//                return -1;
+//            }
+//            return 0;
+//            
+//    }
+//        for (int i = 0; i < KOKO; i++) {
+//            for (int j = 0; j <KOKO; j++) {
+//               if (lauta[i][j] == TYHJA) {
+//                   lauta[i][j] = pelaaja;
+//               }
+//            }
+//        }
+//        if (pelaaja == 'X') {
+//            return 
+//        }
+//    }
 
     public void tulosta() {
         System.out.println("  0   1   2");
@@ -194,6 +218,7 @@ public class Peli {
                     }
                     if (pelaaja == X) {         // pelaaja vaihtuu
                         pelaaja = O;
+                        risti(pelilauta);
                         Sijainti location = new Sijainti(minimaxi(pelilauta).getVaaka(), minimaxi(pelilauta).getPysty());
                         setRuutu(location.getVaaka(), location.getPysty(), 'O');
                     } else {
