@@ -54,7 +54,7 @@ public class Peli {
                     int newval = nolla(pelilauta);
                     if (newval > mybest) {
                         mybest = newval;
-                    } 
+                    }
                 }
 
             }
@@ -87,12 +87,12 @@ public class Peli {
         }
         return myworst;
     }
-    
-    public int[][] minimaxi(char[][] lauta) {
-        
+
+    public Sijainti minimaxi(char[][] lauta) {
+
         int parasArvo = Integer.MAX_VALUE;
         int index = 0;
-        int[][] parasSiirto = new int[1][2]; // väliaikainen, tietokone päätyy aina ensimmäiseen löydettyyn parhaaseen
+        Sijainti[] parasSiirto = new Sijainti[9]; // väliaikainen, tietokone päätyy aina ensimmäiseen löydettyyn parhaaseen
         for (int i = 0; i < KOKO; i++) {
             for (int j = 0; j < KOKO; j++) {
                 if (lauta[i][j] == TYHJA) {
@@ -101,22 +101,23 @@ public class Peli {
                     if (arvo < parasArvo) {
                         parasArvo = arvo;
                         index = 0;
-                        parasSiirto[0][0] = i;
-                        parasSiirto[0][1] = j;
-//                    } else if (arvo == parasArvo)         | ks. ylös
-//                        parasSiirto[index++] = arvo;
+                        parasSiirto[index] = new Sijainti(i, j);
+                    } else if (arvo == parasArvo) {
+                        parasSiirto[index++] = new Sijainti(i, j);
+                    }
                     lauta[i][j] = TYHJA;
                 }
             }
-            
-                
-            
+
+
+
         }
-//        if (index > 0)
-//                index = (int)Math.random()%index;         | ks. ylös
-            
-        
-    }return parasSiirto;
+        if (index > 0) {
+            index = (int) Math.random() % index;
+        }
+
+        return parasSiirto[index];
+
     }
 
     public void tulosta() {
@@ -174,49 +175,49 @@ public class Peli {
     public void pelaa() {
         boolean pelaako = true;
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        while (pelaako) { 
+        while (pelaako) {
             if (pelaaja == X) {
-            
-            try {
-                boolean kelpaavaSiirto = false;
-                while (!kelpaavaSiirto) {     // kysytään koordinaatteja kunnes saadaan pelialueella oleva paikka
-                    tulosta();
-                    System.out.println("Pelaaja: " + pelaaja);
-                    System.out.println("Mikä rivi ");
-                    int vaaka = new Integer(in.readLine());
-                    System.out.println("Mikä sarake ");
-                    int pysty = new Integer(in.readLine());
 
-                    kelpaavaSiirto = setRuutu(vaaka, pysty, pelaaja);
-                    if (!pelaako) {
-                        System.out.println("Väärä siirto");
+                try {
+                    boolean kelpaavaSiirto = false;
+                    while (!kelpaavaSiirto) {     // kysytään koordinaatteja kunnes saadaan pelialueella oleva paikka
+                        tulosta();
+                        System.out.println("Pelaaja: " + pelaaja);
+                        System.out.println("Mikä rivi ");
+                        int vaaka = new Integer(in.readLine());
+                        System.out.println("Mikä sarake ");
+                        int pysty = new Integer(in.readLine());
+
+                        kelpaavaSiirto = setRuutu(vaaka, pysty, pelaaja);
+                        if (!pelaako) {
+                            System.out.println("Väärä siirto");
+                        }
                     }
-                } 
-            
 
 
-                
-                if (this.voittiko() == 'X' || this.voittiko() == 'O') {
-                    tulosta();
-                    System.out.println("Voittaja : " + this.voittiko());
-                    return;
+
+
+                    if (this.voittiko() == 'X' || this.voittiko() == 'O') {
+                        tulosta();
+                        System.out.println("Voittaja : " + this.voittiko());
+                        return;
+                    }
+                    if (this.voittiko() == 't') {
+                        tulosta();
+                        System.out.println("Tasapeli");
+                        return;
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                if (this.voittiko() == 't') {
-                    tulosta();
-                    System.out.println("Tasapeli");
-                    return;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            
+
             }
             if (pelaaja == X) {         // pelaaja vaihtuu
-                    pelaaja = O;
-                } else {
-                    pelaaja = X;
-                } 
-                  //  setRuutu(jotain, jatka tästä) 
-                        }
+                pelaaja = O;
+            } else {
+                pelaaja = X;
+            }
+            //  setRuutu(jotain, jatka tästä) 
+        }
     }
 }
