@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Peli {
-
+    
     public char[][] pelilauta;
     char pelaaja;
     public static final char X = 'X';
@@ -176,48 +176,51 @@ public class Peli {
         boolean pelaako = true;
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         while (pelaako) {
-            if (pelaaja == X) {
 
-                try {
-                    boolean kelpaavaSiirto = false;
-                    while (!kelpaavaSiirto) {     // kysytään koordinaatteja kunnes saadaan pelialueella oleva paikka
-                        tulosta();
-                        System.out.println("Pelaaja: " + pelaaja);
-                        System.out.println("Mikä rivi ");
-                        int vaaka = new Integer(in.readLine());
-                        System.out.println("Mikä sarake ");
-                        int pysty = new Integer(in.readLine());
 
-                        kelpaavaSiirto = setRuutu(vaaka, pysty, pelaaja);
-                        if (!pelaako) {
-                            System.out.println("Väärä siirto");
-                        }
+            try {
+                boolean kelpaavaSiirto = false;
+                while (!kelpaavaSiirto) {     // kysytään koordinaatteja kunnes saadaan pelialueella oleva paikka
+                    tulosta();
+                    System.out.println("Pelaaja: " + pelaaja);
+                    System.out.println("Mikä rivi ");
+                    int vaaka = new Integer(in.readLine());
+                    System.out.println("Mikä sarake ");
+                    int pysty = new Integer(in.readLine());
+
+                    kelpaavaSiirto = setRuutu(vaaka, pysty, pelaaja);
+                    if (!pelaako) {
+                        System.out.println("Väärä siirto");
                     }
-
-
-
-
-                    if (this.voittiko() == 'X' || this.voittiko() == 'O') {
-                        tulosta();
-                        System.out.println("Voittaja : " + this.voittiko());
-                        return;
+                    if (pelaaja == X) {         // pelaaja vaihtuu
+                        pelaaja = O;
+                        Sijainti location = new Sijainti(minimaxi(pelilauta).getVaaka(), minimaxi(pelilauta).getPysty());
+                        setRuutu(location.getVaaka(), location.getPysty(), 'O');
+                    } else {
+                        pelaaja = X;
                     }
-                    if (this.voittiko() == 't') {
-                        tulosta();
-                        System.out.println("Tasapeli");
-                        return;
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
 
+
+
+
+                if (this.voittiko() == 'X' || this.voittiko() == 'O') {
+                    tulosta();
+                    System.out.println("Voittaja : " + this.voittiko());
+                    return;
+                }
+                if (this.voittiko() == 't') {
+                    tulosta();
+                    System.out.println("Tasapeli");
+                    return;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            if (pelaaja == X) {         // pelaaja vaihtuu
-                pelaaja = O;
-            } else {
-                pelaaja = X;
-            }
-            //  setRuutu(jotain, jatka tästä) 
+
+
         }
+
+        //  setRuutu(jotain, jatka tästä) 
     }
 }
