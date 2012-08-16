@@ -36,7 +36,7 @@ public class Peli {
         }
     }
 
-    public int risti(char[][] lauta, int v) {
+    public int nolla(char[][] lauta, int v) {
         int rVuoro = v;
         if (voittiko(rVuoro) != TYHJA) {
             if (voittiko(rVuoro) == X) {
@@ -53,7 +53,7 @@ public class Peli {
                 if (pelilauta[m][n] == TYHJA) {
                     pelilauta[m][n] = O;
                     rVuoro++;
-                    int newval = nolla(pelilauta, rVuoro);
+                    int newval = risti(pelilauta, rVuoro);
                     if (newval > mybest) {
                         mybest = newval;
                     } lauta[m][n] = TYHJA;
@@ -65,7 +65,7 @@ public class Peli {
     }
     }
 
-    public int nolla(char[][] lauta, int v) {
+    public int risti(char[][] lauta, int v) {
        int rVuoro = v;
         if (voittiko(rVuoro) != TYHJA) {
             if (voittiko(rVuoro) == X) {
@@ -82,7 +82,7 @@ public class Peli {
                 if (pelilauta[m][n] == TYHJA) {
                     pelilauta[m][n] = X;
                     rVuoro++;
-                    int newval = risti(pelilauta, rVuoro);
+                    int newval = nolla(pelilauta, rVuoro);
                     if (newval < myworst) {
                         myworst = newval;
                     }
