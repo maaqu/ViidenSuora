@@ -11,7 +11,7 @@ public class Peli {
     public static final char O = 'O';
     public static final char TYHJA = ' ';
     public static final int KOKO = 3; // muutettavissa kysyttäväksi; => n
-    public static int vuoro;
+    public int vuoro;
 
     public Peli() {
 
@@ -36,22 +36,24 @@ public class Peli {
         }
     }
 
-    public int risti(char[][] lauta) {
-        if (voittiko() != TYHJA) {
-            if (voittiko() == X) {
+    public int risti(char[][] lauta, int v) {
+        int rVuoro = v;
+        if (voittiko(rVuoro) != TYHJA) {
+            if (voittiko(rVuoro) == X) {
                 return 1;
             }
-            if (voittiko() == O) {
+            if (voittiko(rVuoro) == O) {
                 return -1;
             }
             return 0;
-        }
+        } else {
         int mybest = Integer.MIN_VALUE;
         for (int m = 0; m < KOKO; m++) {
             for (int n = 0; n < KOKO; n++) {
                 if (pelilauta[m][n] == TYHJA) {
                     pelilauta[m][n] = O;
-                    int newval = nolla(pelilauta);
+                    rVuoro++;
+                    int newval = nolla(pelilauta, rVuoro);
                     if (newval > mybest) {
                         mybest = newval;
                     } lauta[m][n] = TYHJA;
@@ -61,24 +63,27 @@ public class Peli {
         }
         return mybest;
     }
+    }
 
-    public int nolla(char[][] lauta) {
-        if (voittiko() != TYHJA) {
-            if (voittiko() == X) {
+    public int nolla(char[][] lauta, int v) {
+       int rVuoro = v;
+        if (voittiko(rVuoro) != TYHJA) {
+            if (voittiko(rVuoro) == X) {
                 return 1;
             }
-            if (voittiko() == O) {
+            if (voittiko(rVuoro) == O) {
                 return -1;
             }
             return 0;
-        }
+        } else {
         int myworst = Integer.MAX_VALUE;
         for (int m = 0; m < KOKO; m++) {
             for (int n = 0; n < KOKO; n++) {
                 if (pelilauta[m][n] == TYHJA) {
                     pelilauta[m][n] = X;
-                    int newval = risti(pelilauta);
-                    if (newval > myworst) {
+                    rVuoro++;
+                    int newval = risti(pelilauta, rVuoro);
+                    if (newval < myworst) {
                         myworst = newval;
                     }
                     lauta[m][n] = TYHJA;
@@ -88,8 +93,8 @@ public class Peli {
         }
         return myworst;
     }
-
-    public Sijainti minimaxi(char[][] lauta) {
+    }
+    public Sijainti minimaxi(char[][] lauta, int v) {
 
         int parasArvo = Integer.MAX_VALUE;
         int index = 0;
@@ -98,7 +103,7 @@ public class Peli {
             for (int j = 0; j < KOKO; j++) {
                 if (lauta[i][j] == TYHJA) {
                     lauta[i][j] = O;
-                    int arvo = risti(lauta);
+                    int arvo = risti(lauta, v);
                     if (arvo < parasArvo) {
                         parasArvo = arvo;
                         index = 0;
@@ -162,7 +167,7 @@ public class Peli {
 
     }
 
-    char voittiko() {
+    char voittiko(int vuo) {
 
 
         if (pelilauta[1][0] == pelilauta[0][0] && pelilauta[1][0] == pelilauta[2][0]) {
@@ -189,7 +194,7 @@ public class Peli {
         if (pelilauta[0][2] == pelilauta[1][1] && pelilauta[0][2] == pelilauta[2][0]) {
             return pelilauta[0][2];
         }
-        if (vuoro == KOKO * KOKO) {
+        if (vuo == KOKO * KOKO) {
             return 't';
         }
 
@@ -217,10 +222,10 @@ public class Peli {
                         System.out.println("Väärä siirto");
                     }
                     if (pelaaja == X) {         // pelaaja vaihtuu
-                        pelaaja = O;
-                        risti(pelilauta);
-                        Sijainti location = new Sijainti(minimaxi(pelilauta).getVaaka(), minimaxi(pelilauta).getPysty());
+                        risti(pelilauta, vuoro);
+                        Sijainti location = new Sijainti(minimaxi(pelilauta, vuoro).getVaaka(), minimaxi(pelilauta, vuoro).getPysty());
                         setRuutu(location.getVaaka(), location.getPysty(), 'O');
+                        
                     } else {
                         pelaaja = X;
                     }
@@ -229,12 +234,12 @@ public class Peli {
 
 
 
-                if (this.voittiko() == 'X' || this.voittiko() == 'O') {
+                if (this.voittiko(vuoro) == 'X' || this.voittiko(vuoro) == 'O') {
                     tulosta();
-                    System.out.println("Voittaja : " + this.voittiko());
+                    System.out.println("Voittaja : " + this.voittiko(vuoro));
                     return;
                 }
-                if (this.voittiko() == 't') {
+                if (this.voittiko(vuoro) == 't') {
                     tulosta();
                     System.out.println("Tasapeli");
                     return;
