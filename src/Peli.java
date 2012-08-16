@@ -41,6 +41,7 @@ public class Peli {
         if (voittiko(rVuoro) != TYHJA) {
             if (voittiko(rVuoro) == X) {
                 return 1;
+
             }
             if (voittiko(rVuoro) == O) {
                 return -1;
@@ -95,8 +96,7 @@ public class Peli {
     }
     }
     public Sijainti minimaxi(char[][] lauta, int v) {
-
-        int parasArvo = Integer.MAX_VALUE;
+        int parasArvo = Integer.MIN_VALUE;
         int index = 0;
         Sijainti[] parasSiirto = new Sijainti[9]; // väliaikainen, tietokone päätyy aina ensimmäiseen löydettyyn parhaaseen
         for (int i = 0; i < KOKO; i++) {
@@ -104,7 +104,7 @@ public class Peli {
                 if (lauta[i][j] == TYHJA) {
                     lauta[i][j] = O;
                     int arvo = risti(lauta, v);
-                    if (arvo < parasArvo) {
+                    if (arvo > parasArvo) {
                         parasArvo = arvo;
                         index = 0;
                         parasSiirto[index] = new Sijainti(i, j);
@@ -119,7 +119,7 @@ public class Peli {
 
         }
         if (index > 0) {
-            index = (int) Math.random() % index;
+            index = (int) Math.random()*index;
         }
 
         return parasSiirto[index];
