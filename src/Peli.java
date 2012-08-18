@@ -40,11 +40,11 @@ public class Peli {
         int rVuoro = v;
         if (voittiko(rVuoro) != TYHJA) {
             if (voittiko(rVuoro) == X) {
-                return 1;
+                return -1;
 
             }
             if (voittiko(rVuoro) == O) {
-                return -1;
+                return 1;
             }
             return 0;
         } else {
@@ -70,10 +70,10 @@ public class Peli {
        int rVuoro = v;
         if (voittiko(rVuoro) != TYHJA) {
             if (voittiko(rVuoro) == X) {
-                return 1;
+                return -1;
             }
             if (voittiko(rVuoro) == O) {
-                return -1;
+                return 1;
             }
             return 0;
         } else {
