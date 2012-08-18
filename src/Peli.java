@@ -99,13 +99,15 @@ public class Peli {
         int parasArvo = Integer.MIN_VALUE;
         int index = 0;
         Sijainti[] parasSiirto = new Sijainti[9]; // väliaikainen, tietokone päätyy aina ensimmäiseen löydettyyn parhaaseen
-        for (int i = 0; i < KOKO; i++) {
+        for (int i = 0; i < KOKO; i++) {          // ei tajua 1,1 -> 1,2 -> 0,0 tilannetta oikein
             for (int j = 0; j < KOKO; j++) {
                 if (lauta[i][j] == TYHJA) {
                     lauta[i][j] = O;
                     int arvo = risti(lauta, v);
                     if (arvo > parasArvo) {
                         parasArvo = arvo;
+                        for (int u = 0; u < 9; u++)
+                            parasSiirto[u] = null;
                         index = 0;
                         parasSiirto[index] = new Sijainti(i, j);
                     } else if (arvo == parasArvo) 
