@@ -1,16 +1,16 @@
 
 public class Sijainti {
-    private int vaaka;
-    private int pysty;
+    private int i;
+    private int j;
     
-    public Sijainti(int vaaka, int pysty) {
-        this.vaaka = vaaka;
-        this.pysty = pysty;
-    }
-    public int getVaaka() {
-        return vaaka;
+    public Sijainti(int pysty, int vaaka) {
+        this.i = pysty;
+        this.j = vaaka;
     }
     public int getPysty() {
-        return pysty;
+        return i;
+    }
+    public int getVaaka() {
+        return j;
     }
 }

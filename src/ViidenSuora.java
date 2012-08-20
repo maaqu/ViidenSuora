@@ -6,7 +6,7 @@ public class ViidenSuora {
         System.out.println("Tämä on kolmen suora!");
 
         
-//        int[][] lauta = { {1, 2, 3}, {4, 5, 6}, {7, 8, 9} }; //testailua
+       char[][] lauta = { {'O', 'O', ' '}, {'O', 'X', 'X'}, {' ', 'X', 'X'} }; //testailua
         
         Peli ristinolla = new Peli();
         ristinolla.pelaa();

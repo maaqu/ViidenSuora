@@ -13,11 +13,13 @@ public class Testi {
     private Peli todellinen; //=pelitilanne
     private char pelaaja;
     int myBest;
+    private int vuoro;
 
     public Testi(Peli tilanne) {
         this.todellinen = tilanne;
         this.palautettava = todellinen;
         this.pelaaja = 'X';
+        this.vuoro = 0;
         
     }
 
@@ -30,11 +32,11 @@ public class Testi {
         for (int r = 0; r < todellinen.KOKO; r++) {
             for (int s = 0; s < todellinen.KOKO; s++) {
 
-                if (palautettava.voittiko() == 'X') {
+                if (palautettava.voittiko(vuoro) == 'X') {
                     return 1; //return
-                } else if (palautettava.voittiko() == '0') {
+                } else if (palautettava.voittiko(vuoro) == '0') {
                     return -1; //return
-                } else if (palautettava.voittiko() == 't') {
+                } else if (palautettava.voittiko(vuoro) == 't') {
                     return 0; //return
                 
                 } else {
