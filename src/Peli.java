@@ -5,13 +5,13 @@ import java.io.InputStreamReader;
 
 public class Peli {
 
-    public char[][] pelilauta;
+    public static char[][] pelilauta;
     char pelaaja;
     public static final char X = 'X';
     public static final char O = 'O';
     public static final char TYHJA = ' ';
     public static final int KOKO = 3; // muutettavissa kysyttäväksi; => n
-    public int vuoro;
+    public static int vuoro;
 
     public Peli() {
 
