@@ -10,11 +10,11 @@ public class Peli {
     public static final char X = 'X';
     public static final char O = 'O';
     public static final char TYHJA = ' ';
-    public static final int KOKO = 3; // muutettavissa kysyttäväksi; => n
+    public static int KOKO; // muutettavissa kysyttäväksi; => n
     public static int vuoro;
 
     public Peli() {
-
+        this.KOKO = 3;
         pelilauta = new char[KOKO][KOKO];
 
         for (int i = 0; i < pelilauta.length; i++) {
@@ -24,6 +24,19 @@ public class Peli {
         }
         vuoro = 0;
         pelaaja = O;
+    }
+
+    public Peli(int koko) {
+        this.KOKO = koko;
+        pelilauta = new char[KOKO][KOKO];
+
+        for (int i = 0; i < pelilauta.length; i++) {
+            for (int j = 0; j < pelilauta.length; j++) {
+                pelilauta[i][j] = TYHJA;
+            }
+        }
+        vuoro = 0;
+        pelaaja = 0;
     }
 
     public boolean setRuutu(int pysty, int vaaka, char pelaaja) {
@@ -176,6 +189,41 @@ public class Peli {
 
     }
 
+    public void tulosta(int koko) { //tulee olemaan parametritön
+
+        System.out.print("  ");
+        for (int l = 0; l < KOKO; l++) {
+            System.out.print(l + "   ");
+        }
+        System.out.println();
+
+        for (int i = 0; i < KOKO; i++) {
+            for (int j = 0; j < KOKO; j++) {
+                if (j == 0) {
+                    System.out.print(i);
+                }
+                System.out.print(" " + pelilauta[i][j] + " ");
+                if (j != KOKO - 1) {
+                    System.out.print("|");
+                }
+            }
+            if (i != KOKO - 1) {
+                System.out.println();
+                int apu = 1;
+                System.out.print(" ");
+
+                while (apu <= KOKO) {
+                    System.out.print("---");
+                    if (apu < KOKO) {
+                        System.out.print("+");
+                    }
+                    apu++;
+                }
+            }
+            System.out.println();
+        }
+    }
+
     char voittiko(int vuo) {
 
 
@@ -319,14 +367,13 @@ public class Peli {
                 }
             }
         }
-            if (index > 0)
-                index = (int) (Math.random() * index);
-            
-            
+        if (index > 0) {
+            index = (int) (Math.random() * index);
+        }
+
+
         return bestMove[index];
     }
-                
-    
 
     public int minSearch(char[][] pelilautsa, int v) {
         int i;
