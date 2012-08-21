@@ -110,27 +110,27 @@ public class Peli {
     }
 
     public Sijainti minimaxi(char[][] lauta, int v) {
-        int parasArvo = Integer.MIN_VALUE;
+        int huonoinArvo = Integer.MIN_VALUE;
         int index = 0;
         int arvo;
         Sijainti[] parasSiirto = new Sijainti[9]; // väliaikainen, tietokone päätyy aina ensimmäiseen löydettyyn parhaaseen
         for (int i = 0; i < KOKO; i++) {          // ei tajua 1,1 -> 1,2 -> 0,0 tilannetta oikein
             for (int j = 0; j < KOKO; j++) {
                 if (lauta[i][j] == TYHJA) {
-                    lauta[i][j] = O;
-                    if (voittiko(v, lauta) == 'O') {
-                        arvo = -1;
+                    lauta[i][j] = X;
+                    if (voittiko(v, lauta) == 'X') {
+                        arvo = 1;
                     } else {
-                        arvo = risti(lauta, v);
+                        arvo = nolla(lauta, v);
                     }
-                    if (arvo > parasArvo) {
-                        parasArvo = arvo;
+                    if (arvo > huonoinArvo) {
+                        huonoinArvo = arvo;
                         for (int u = 0; u < 9; u++) {
                             parasSiirto[u] = null;
                         }
                         index = 0;
                         parasSiirto[index] = new Sijainti(i, j);
-                    } else if (arvo == parasArvo) {
+                    } else if (arvo == huonoinArvo) {
                         parasSiirto[index++] = new Sijainti(i, j);
                     }
 
@@ -302,7 +302,7 @@ public class Peli {
 
                 boolean kelpaavaSiirto = false;
                 while (!kelpaavaSiirto) {
-                    Sijainti location = new Sijainti(minimax(pelilauta, vuoro).getPysty(), minimax(pelilauta, vuoro).getVaaka());
+                    Sijainti location = new Sijainti(minimaxi(pelilauta, vuoro).getPysty(), minimaxi(pelilauta, vuoro).getVaaka());
                     setRuutu(location.getPysty(), location.getVaaka(), 'X');
                     voittoTarkistus();
                     // kysytään koordinaatteja kunnes saadaan pelialueella oleva paikka
