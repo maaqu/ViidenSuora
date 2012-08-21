@@ -9,53 +9,80 @@
  */
 public class Testi {
 
-    private Peli palautettava;//paras tilanne
-    private Peli todellinen; //=pelitilanne
-    private char pelaaja;
-    int myBest;
-    private int vuoro;
+    public static Peli uusi = new Peli();
+    public static int syvyys;
+    public static int[] sijainti = new int[2];
 
-    public Testi(Peli tilanne) {
-        this.todellinen = tilanne;
-        this.palautettava = todellinen;
-        this.pelaaja = 'X';
-        this.vuoro = 0;
-        
-    }
+    public static int risti(Peli tilanne) {
+        Peli nyt = tilanne;
+        if (nyt.voittiko(nyt.vuoro) != nyt.TYHJA) {
+            if (nyt.voittiko(nyt.vuoro) == 'X') {
+                return 1;
+            } else if (nyt.voittiko(nyt.vuoro) == '0') {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
+        int myBest = Integer.MIN_VALUE;
+        int uusiarvo;
+        for (int i = 0; i < nyt.KOKO; i++) {
+            for (int j = 0; j < nyt.KOKO; j++) {
 
-    public void tarkistaTilanne() {
-        kayLapi();
-    }
-
-    public int kayLapi() { 
-
-        for (int r = 0; r < todellinen.KOKO; r++) {
-            for (int s = 0; s < todellinen.KOKO; s++) {
-
-                if (palautettava.voittiko(vuoro) == 'X') {
-                    return 1; //return
-                } else if (palautettava.voittiko(vuoro) == '0') {
-                    return -1; //return
-                } else if (palautettava.voittiko(vuoro) == 't') {
-                    return 0; //return
-                
-                } else {
-
-                    if (palautettava.pelilauta[r][s] == todellinen.TYHJA) {
-                        palautettava.setRuutu(r, s, pelaaja);
-                        if (this.pelaaja == 'X') {
-                            pelaaja = '0';
-                        } else {
-                            pelaaja = 'X';
-                        }
-                        kayLapi();
-                        
-                    } else {
-                        kayLapi();
+                if (nyt.pelilauta[i][j] == uusi.TYHJA) {
+                    nyt.setRuutu(i, j, tilanne.pelaaja);
+                    uusiarvo = nolla(nyt);
+                    if (uusiarvo > myBest) {
+                        myBest = uusiarvo;
+                        sijainti[0] = i;
+                        sijainti[1] = j;
                     }
                 }
             }
         }
-        return 88;
+
+        return myBest;
+    }
+
+    public static int nolla(Peli tilanne) {
+        Peli nyt = tilanne;
+
+        if (nyt.voittiko(nyt.vuoro) != nyt.TYHJA) {
+            if (nyt.voittiko(nyt.vuoro) == 'X') {
+                return 1;
+            } else if (nyt.voittiko(nyt.vuoro) == '0') {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
+        int myWorst = Integer.MAX_VALUE;
+        //       int[] placeOfWorst = new int[3];
+        //       placeOfWorst[2] = myWorst;
+        int uusiarvo;
+
+        for (int i = 0; i < nyt.KOKO; i++) {
+            for (int j = 0; j < nyt.KOKO; j++) {
+
+                if (nyt.pelilauta[i][j] == uusi.TYHJA) {
+                    nyt.setRuutu(i, j, tilanne.pelaaja);
+                    uusiarvo = risti(nyt);
+                    if (uusiarvo < myWorst) {
+                        myWorst = uusiarvo;
+                        //                     sijainti[0] = i;
+                        //                     placeOfWorst[1] = j;
+                    }
+                }
+            }
+        }
+
+        return myWorst;
+    }
+
+    public static void main(String[] args) {
+
+        Peli ristinolla = new Peli();
+        ristinolla.pelaa();
+
     }
 }
