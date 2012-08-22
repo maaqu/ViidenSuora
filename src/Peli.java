@@ -422,7 +422,7 @@ public class Peli {
             int bestPoeng = metodiJokaLaskeeKyseisenLautaTilanteenPisteet(lauta);
             return bestPoeng;
         } else {
-            if (syvyys%2 != 0) {
+            if (syvyys % 2 != 0) {
                 for (int i = 0; i < KOKO; i++) {
                     for (int j = 0; j < KOKO; j++) {
                         if (lauta[i][j] == TYHJA) {
@@ -458,7 +458,152 @@ public class Peli {
         }
     }
 
-    private int metodiJokaLaskeeKyseisenLautaTilanteenPisteet(char[][] lauta) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    private int metodiJokaLaskeeKyseisenLautaTilanteenPisteet(char[][] plauta) {
+
+        int arvo = 0;
+
+        for (int i = 0; i < KOKO; i++) {
+            for (int j = 0; j < KOKO; j++) {
+                
+                if (plauta[i][j] == TYHJA) {
+                    // kun koneen vuoro ja koneella paikkoja
+                    if (plauta[j + 2][i - 2] == vuoro && //kulmat
+                            plauta[j + 1][i - 1] == vuoro) {
+                        if(vuoro==X)
+                            arvo += 1000;
+                        else
+                            arvo += -1000;
+                    }
+                    if (plauta[j + 1][i - 1] == vuoro
+                            && plauta[j + 2][i - 2] == vuoro) {
+                        if(vuoro==X)
+                            arvo += 1000;
+                        else
+                            arvo += -1000;
+                    }
+                    if (plauta[j + 1][i + 1] == vuoro
+                            && plauta[j + 2][i + 2] == vuoro) {
+                        if(vuoro==X)
+                            arvo += 1000;
+                        else
+                            arvo += -1000;
+                    }
+                    if (plauta[j - 1][i - 1] == vuoro
+                            && plauta[j + 1][i + 1] == vuoro) {
+                        if(vuoro==X)
+                            arvo += 1000;
+                        else
+                            arvo += -1000;;
+                    }
+                    if (plauta[j - 1][i + 1] == vuoro
+                            && plauta[j + 1][i - 1] == vuoro) {
+                        if(vuoro==X)
+                            arvo += 1000;
+                        else
+                            arvo += -1000;
+                    }
+                    if (plauta[j][i - 1] == vuoro && //vaaka
+                            plauta[j][i + 1] == vuoro) {
+                        if(vuoro==X)
+                            arvo += 1000;
+                        else
+                            arvo += -1000;
+                    }
+                    if (plauta[j][i + 1] == vuoro
+                            && plauta[j][i + 2] == vuoro) {
+                        if(vuoro==X)
+                            arvo += 1000;
+                        else
+                            arvo += -1000;
+                    }
+                    if (plauta[j][i - 1] == vuoro
+                            && plauta[j][i - 2] == vuoro) {
+                        if(vuoro==X)
+                            arvo += 1000;
+                        else
+                            arvo += -1000;
+                    }
+                    if (plauta[j - 1][i] == vuoro && //pysty
+                            plauta[j + 1][i] == vuoro) {
+                        if(vuoro==X)
+                            arvo += 1000;
+                        else
+                            arvo += -1000;
+                    }
+                    if (plauta[j - 1][i] == vuoro
+                            && plauta[j - 2][i] == vuoro) {
+                        if(vuoro==X)
+                            arvo += 1000;
+                        else
+                            arvo += -1000;
+                    }
+                    if (plauta[j + 1][i] == vuoro
+                            && plauta[j + 2][i] == vuoro) {
+                        if(vuoro==X)
+                            arvo += 1000;
+                        else
+                            arvo += -1000;
+                    }
+                    //kun koneella vuoro ja vastustajalla paikkoja
+
+                    if (plauta[j + 2][i - 2] != vuoro && //kulmat
+                            plauta[j + 1][i - 1] != vuoro) {
+                        if(vuoro==X)
+                            arvo += 700;
+                    }
+                    if (plauta[j + 1][i - 1] != vuoro
+                            && plauta[j + 2][i - 2] != vuoro) {
+                        if(vuoro==X)
+                            arvo += 700;
+                    }
+                    if (plauta[j + 1][i + 1] != vuoro
+                            && plauta[j + 2][i + 2] != vuoro) {
+                        if(vuoro==X)
+                            arvo += 700;
+                    }
+                    if (plauta[j - 1][i - 1] != vuoro
+                            && plauta[j + 1][i + 1] != vuoro) {
+                        if(vuoro==X)
+                            arvo += 700;
+                    }
+                    if (plauta[j - 1][i + 1] != vuoro
+                            && plauta[j + 1][i - 1] != vuoro) {
+                        if(vuoro==X)
+                            arvo += 700;
+                    }
+                    if (plauta[j][i - 1] != vuoro && //vaaka
+                            plauta[j][i + 1] != vuoro) {
+                        if(vuoro==X)
+                            arvo += 700;
+                    }
+                    if (plauta[j][i + 1] != vuoro
+                            && plauta[j][i + 2] != vuoro) {
+                        if(vuoro==X)
+                            arvo += 700;
+                    }
+                    if (plauta[j][i - 1] != vuoro
+                            && plauta[j][i - 2] != vuoro) {
+                        if(vuoro==X)
+                            arvo += 700;
+                    }
+                    if (plauta[j - 1][i] != vuoro && //pysty
+                            plauta[j + 1][i] != vuoro) {
+                        if(vuoro==X)
+                            arvo += 700;
+                    }
+                    if (plauta[j - 1][i] != vuoro
+                            && plauta[j - 2][i] != vuoro) {
+                        if(vuoro==X)
+                            arvo += 700;
+                    }
+                    if (plauta[j + 1][i] != vuoro
+                            && plauta[j + 2][i] != vuoro) {
+                        if(vuoro==X)
+                            arvo += 700;
+                    }
+                }
+            }
+        }
+        return arvo;
     }
 }
