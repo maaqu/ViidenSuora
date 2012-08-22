@@ -8,10 +8,10 @@ public class ViidenSuora {
         
        char[][] lauta = { {'O', 'O', ' '}, {'O', 'X', 'X'}, {' ', 'X', 'X'} }; //testailua
         
-        Peli ristinolla = new Peli(10);
-        ristinolla.tulosta(1);
+        Peli ristinolla = new Peli();
+//        ristinolla.tulosta(1);
         
-    //    ristinolla.pelaa();
+        ristinolla.pelaa();
          
     }
 }

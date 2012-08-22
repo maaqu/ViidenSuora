@@ -149,28 +149,6 @@ public class Peli {
 
     }
 
-//    public int minmax(char pelaaja, char[][] lauta) {
-//        if (voittiko() != TYHJA) {
-//            if (voittiko() == X) {
-//                return 1;
-//            }
-//            if (voittiko() == O) {
-//                return -1;
-//            }
-//            return 0;
-//            
-//    }
-//        for (int i = 0; i < KOKO; i++) {
-//            for (int j = 0; j <KOKO; j++) {
-//               if (lauta[i][j] == TYHJA) {
-//                   lauta[i][j] = pelaaja;
-//               }
-//            }
-//        }
-//        if (pelaaja == 'X') {
-//            return 
-//        }
-//    }
     public void tulosta() {
         System.out.println("  0   1   2");
         for (int i = 0; i < KOKO; i++) {
