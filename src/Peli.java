@@ -12,6 +12,9 @@ public class Peli {
     public static final char TYHJA = ' ';
     public static int KOKO; // muutettavissa kysyttäväksi; => n
     public static int vuoro;
+    public static int alpha = Integer.MIN_VALUE;
+    public static int beta = Integer.MAX_VALUE;
+    public static int syvyys = 3;
 
     public Peli() {
         this.KOKO = 3;
@@ -412,5 +415,50 @@ public class Peli {
             }
         }
         return bestValue;
+    }
+
+    public int alphabeta(char[][] lauta, int syvyys, int alpha, int beta) {
+        if (syvyys == 0) {
+            int bestPoeng = metodiJokaLaskeeKyseisenLautaTilanteenPisteet(lauta);
+            return bestPoeng;
+        } else {
+            if (syvyys%2 != 0) {
+                for (int i = 0; i < KOKO; i++) {
+                    for (int j = 0; j < KOKO; j++) {
+                        if (lauta[i][j] == TYHJA) {
+                            lauta[i][j] = X;
+                        }
+                        int preAlpha = alphabeta(lauta, syvyys - 1, alpha, beta);
+                        if (preAlpha > alpha) {
+                            alpha = preAlpha;
+                        }
+                        if (alpha >= beta) {
+                            return beta;
+                        }
+                    }
+                }
+                return alpha;
+            } else {
+                for (int n = 0; n < KOKO; n++) {
+                    for (int m = 0; m < KOKO; m++) {
+                        if (lauta[n][m] == TYHJA) {
+                            lauta[n][m] = O;
+                        }
+                        int preBeta = alphabeta(lauta, syvyys - 1, alpha, beta);
+                        if (preBeta < beta) {
+                            beta = preBeta;
+                        }
+                        if (alpha >= beta) {
+                            return alpha;
+                        }
+                    }
+                }
+                return beta;
+            }
+        }
+    }
+
+    private int metodiJokaLaskeeKyseisenLautaTilanteenPisteet(char[][] lauta) {
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 }
