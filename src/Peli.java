@@ -425,20 +425,26 @@ public class Peli {
         return bestValue;
     }
 
-    public int alphabeta(char[][] lauta, int syvyys, int alpha, int beta) {
+    public int alphabeta(Solmu solmu, int syvyys, int alpha, int beta) {
+        
         if (syvyys == 0) {
-            int bestPoeng = metodiJokaLaskeeKyseisenLautaTilanteenPisteet(lauta);
+            int bestPoeng = metodiJokaLaskeeKyseisenLautaTilanteenPisteet(solmu.board.pelilauta);
             return bestPoeng;
         } else {
             if (syvyys % 2 != 0) {
                 for (int i = 0; i < KOKO; i++) {
                     for (int j = 0; j < KOKO; j++) {
-                        if (lauta[i][j] == TYHJA) {
-                            lauta[i][j] = X;
+                        Solmu n = new Solmu();
+                        n.kopioi(solmu);
+                        if (n.board.pelilauta[i][j] == TYHJA) {
+                            n.board.pelilauta[i][j] = X;
                         }
-                        int preAlpha = alphabeta(lauta, syvyys - 1, alpha, beta);
+                        solmu.AddLapsi(n);
+                        int preAlpha = alphabeta(solmu, syvyys - 1, alpha, beta);
                         if (preAlpha > alpha) {
                             alpha = preAlpha;
+                            n.parent.pisteet = preAlpha;
+                            
                         }
                         if (alpha >= beta) {
                             return beta;
@@ -447,14 +453,20 @@ public class Peli {
                 }
                 return alpha;
             } else {
-                for (int n = 0; n < KOKO; n++) {
+                for (int l = 0; l < KOKO; l++) {
                     for (int m = 0; m < KOKO; m++) {
-                        if (lauta[n][m] == TYHJA) {
-                            lauta[n][m] = O;
+                        
+                        Solmu n = new Solmu();
+                        n.kopioi(solmu);
+                        
+                        if (solmu.board.pelilauta[l][m] == TYHJA) {
+                            solmu.board.pelilauta[l][m] = O;
                         }
-                        int preBeta = alphabeta(lauta, syvyys - 1, alpha, beta);
+                        solmu.AddLapsi(n);
+                        int preBeta = alphabeta(solmu, syvyys - 1, alpha, beta);
                         if (preBeta < beta) {
                             beta = preBeta;
+                            n.parent.pisteet = preBeta;
                         }
                         if (alpha >= beta) {
                             return alpha;

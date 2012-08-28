@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class Solmu {
     
     public int moveBox;
-    public int point;
+    public int pisteet;
     public Peli board;
     public Solmu parent;
     public ArrayList<Solmu> lapsiSolmu = new ArrayList<Solmu>();
@@ -36,7 +36,7 @@ public class Solmu {
     }
 
     public void kopioi(Solmu n) {
-        this.point=n.point;
+        this.pisteet=n.pisteet;
 
         this.board.kopioi(n.board);
 
