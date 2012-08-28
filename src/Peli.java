@@ -41,7 +41,13 @@ public class Peli {
         vuoro = 0;
         pelaaja = 0;
     }
-
+    public Peli(Peli lauta) {
+        this.pelilauta = lauta.pelilauta; // salee joutuu hoitaa laittaa foris
+        this.vuoro = lauta.vuoro;
+        this.pelaaja = lauta.pelaaja;
+    }
+    
+    //setMove:
     public boolean setRuutu(int pysty, int vaaka, char pelaaja) {
         if (pelilauta[pysty][vaaka] == TYHJA) {
             pelilauta[pysty][vaaka] = pelaaja;
@@ -204,7 +210,8 @@ public class Peli {
             System.out.println();
         }
     }
-
+    
+    //checkCondition:
     char voittiko(int vuo) {
 
 
@@ -238,7 +245,8 @@ public class Peli {
 
         return TYHJA;
     }
-
+    
+    //Inteligence->bordPoint:
     char voittiko(int vuo, char[][] plauta) {
 
 
@@ -457,9 +465,14 @@ public class Peli {
             }
         }
     }
+        public void kopioi(Peli lautatilanne){
+        this.vuoro=lautatilanne.vuoro;
+        this.pelaaja=lautatilanne.pelaaja;
+        lautatilanne.pelilauta = this.pelilauta;
+    }
 
     private int metodiJokaLaskeeKyseisenLautaTilanteenPisteet(char[][] plauta) {
-
+            // = checkCondition
         int arvo = 0;
 
         for (int i = 0; i < KOKO; i++) {
