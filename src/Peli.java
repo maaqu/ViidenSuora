@@ -41,12 +41,13 @@ public class Peli {
         vuoro = 0;
         pelaaja = 0;
     }
+
     public Peli(Peli lauta) {
         this.pelilauta = lauta.pelilauta; // salee joutuu hoitaa laittaa foris
         this.vuoro = lauta.vuoro;
         this.pelaaja = lauta.pelaaja;
     }
-    
+
     //setMove:
     public boolean setRuutu(int pysty, int vaaka, char pelaaja) {
         if (pelilauta[pysty][vaaka] == TYHJA) {
@@ -210,7 +211,7 @@ public class Peli {
             System.out.println();
         }
     }
-    
+
     //checkCondition:
     char voittiko(int vuo) {
 
@@ -245,7 +246,7 @@ public class Peli {
 
         return TYHJA;
     }
-    
+
     //Inteligence->bordPoint:
     char voittiko(int vuo, char[][] plauta) {
 
@@ -426,7 +427,7 @@ public class Peli {
     }
 
     public int alphabeta(Solmu solmu, int syvyys, int alpha, int beta) {
-        
+
         if (syvyys == 0) {
             int bestPoeng = metodiJokaLaskeeKyseisenLautaTilanteenPisteet(solmu.board.pelilauta);
             return bestPoeng;
@@ -438,16 +439,17 @@ public class Peli {
                         n.kopioi(solmu);
                         if (n.board.pelilauta[i][j] == TYHJA) {
                             n.board.pelilauta[i][j] = X;
-                        }
-                        solmu.AddLapsi(n);
-                        int preAlpha = alphabeta(solmu, syvyys - 1, alpha, beta);
-                        if (preAlpha > alpha) {
-                            alpha = preAlpha;
-                            n.parent.pisteet = preAlpha;
-                            
-                        }
-                        if (alpha >= beta) {
-                            return beta;
+
+                            solmu.AddLapsi(n);
+                            int preAlpha = alphabeta(solmu, syvyys - 1, alpha, beta);
+                            if (preAlpha > alpha) {
+                                alpha = preAlpha;
+                                n.parent.pisteet = preAlpha;
+
+                            }
+                            if (alpha >= beta) {
+                                return beta;
+                            }
                         }
                     }
                 }
@@ -455,21 +457,22 @@ public class Peli {
             } else {
                 for (int l = 0; l < KOKO; l++) {
                     for (int m = 0; m < KOKO; m++) {
-                        
+
                         Solmu n = new Solmu();
                         n.kopioi(solmu);
-                        
+
                         if (solmu.board.pelilauta[l][m] == TYHJA) {
                             solmu.board.pelilauta[l][m] = O;
-                        }
-                        solmu.AddLapsi(n);
-                        int preBeta = alphabeta(solmu, syvyys - 1, alpha, beta);
-                        if (preBeta < beta) {
-                            beta = preBeta;
-                            n.parent.pisteet = preBeta;
-                        }
-                        if (alpha >= beta) {
-                            return alpha;
+
+                            solmu.AddLapsi(n);
+                            int preBeta = alphabeta(solmu, syvyys - 1, alpha, beta);
+                            if (preBeta < beta) {
+                                beta = preBeta;
+                                n.parent.pisteet = preBeta;
+                            }
+                            if (alpha >= beta) {
+                                return alpha;
+                            }
                         }
                     }
                 }
@@ -477,154 +480,177 @@ public class Peli {
             }
         }
     }
-        public void kopioi(Peli lautatilanne){
-        this.vuoro=lautatilanne.vuoro;
-        this.pelaaja=lautatilanne.pelaaja;
+
+    public void kopioi(Peli lautatilanne) {
+        this.vuoro = lautatilanne.vuoro;
+        this.pelaaja = lautatilanne.pelaaja;
         lautatilanne.pelilauta = this.pelilauta;
     }
 
     private int metodiJokaLaskeeKyseisenLautaTilanteenPisteet(char[][] plauta) {
-            // = checkCondition
+        // = checkCondition
         int arvo = 0;
 
         for (int i = 0; i < KOKO; i++) {
             for (int j = 0; j < KOKO; j++) {
-                
+
                 if (plauta[i][j] == TYHJA) {
                     // kun koneen vuoro ja koneella paikkoja
                     if (plauta[j + 2][i - 2] == vuoro && //kulmat
                             plauta[j + 1][i - 1] == vuoro) {
-                        if(vuoro==X)
+                        if (vuoro == X) {
                             arvo += 1000;
-                        else
+                        } else {
                             arvo += -1000;
+                        }
                     }
                     if (plauta[j + 1][i - 1] == vuoro
                             && plauta[j + 2][i - 2] == vuoro) {
-                        if(vuoro==X)
+                        if (vuoro == X) {
                             arvo += 1000;
-                        else
+                        } else {
                             arvo += -1000;
+                        }
                     }
                     if (plauta[j + 1][i + 1] == vuoro
                             && plauta[j + 2][i + 2] == vuoro) {
-                        if(vuoro==X)
+                        if (vuoro == X) {
                             arvo += 1000;
-                        else
+                        } else {
                             arvo += -1000;
+                        }
                     }
                     if (plauta[j - 1][i - 1] == vuoro
                             && plauta[j + 1][i + 1] == vuoro) {
-                        if(vuoro==X)
+                        if (vuoro == X) {
                             arvo += 1000;
-                        else
-                            arvo += -1000;;
+                        } else {
+                            arvo += -1000;
+                        };
                     }
                     if (plauta[j - 1][i + 1] == vuoro
                             && plauta[j + 1][i - 1] == vuoro) {
-                        if(vuoro==X)
+                        if (vuoro == X) {
                             arvo += 1000;
-                        else
+                        } else {
                             arvo += -1000;
+                        }
                     }
                     if (plauta[j][i - 1] == vuoro && //vaaka
                             plauta[j][i + 1] == vuoro) {
-                        if(vuoro==X)
+                        if (vuoro == X) {
                             arvo += 1000;
-                        else
+                        } else {
                             arvo += -1000;
+                        }
                     }
                     if (plauta[j][i + 1] == vuoro
                             && plauta[j][i + 2] == vuoro) {
-                        if(vuoro==X)
+                        if (vuoro == X) {
                             arvo += 1000;
-                        else
+                        } else {
                             arvo += -1000;
+                        }
                     }
                     if (plauta[j][i - 1] == vuoro
                             && plauta[j][i - 2] == vuoro) {
-                        if(vuoro==X)
+                        if (vuoro == X) {
                             arvo += 1000;
-                        else
+                        } else {
                             arvo += -1000;
+                        }
                     }
                     if (plauta[j - 1][i] == vuoro && //pysty
                             plauta[j + 1][i] == vuoro) {
-                        if(vuoro==X)
+                        if (vuoro == X) {
                             arvo += 1000;
-                        else
+                        } else {
                             arvo += -1000;
+                        }
                     }
                     if (plauta[j - 1][i] == vuoro
                             && plauta[j - 2][i] == vuoro) {
-                        if(vuoro==X)
+                        if (vuoro == X) {
                             arvo += 1000;
-                        else
+                        } else {
                             arvo += -1000;
+                        }
                     }
                     if (plauta[j + 1][i] == vuoro
                             && plauta[j + 2][i] == vuoro) {
-                        if(vuoro==X)
+                        if (vuoro == X) {
                             arvo += 1000;
-                        else
+                        } else {
                             arvo += -1000;
+                        }
                     }
                     //kun koneella vuoro ja vastustajalla paikkoja
 
                     if (plauta[j + 2][i - 2] != vuoro && //kulmat
                             plauta[j + 1][i - 1] != vuoro) {
-                        if(vuoro==X)
+                        if (vuoro == X) {
                             arvo += 700;
+                        }
                     }
                     if (plauta[j + 1][i - 1] != vuoro
                             && plauta[j + 2][i - 2] != vuoro) {
-                        if(vuoro==X)
+                        if (vuoro == X) {
                             arvo += 700;
+                        }
                     }
                     if (plauta[j + 1][i + 1] != vuoro
                             && plauta[j + 2][i + 2] != vuoro) {
-                        if(vuoro==X)
+                        if (vuoro == X) {
                             arvo += 700;
+                        }
                     }
                     if (plauta[j - 1][i - 1] != vuoro
                             && plauta[j + 1][i + 1] != vuoro) {
-                        if(vuoro==X)
+                        if (vuoro == X) {
                             arvo += 700;
+                        }
                     }
                     if (plauta[j - 1][i + 1] != vuoro
                             && plauta[j + 1][i - 1] != vuoro) {
-                        if(vuoro==X)
+                        if (vuoro == X) {
                             arvo += 700;
+                        }
                     }
                     if (plauta[j][i - 1] != vuoro && //vaaka
                             plauta[j][i + 1] != vuoro) {
-                        if(vuoro==X)
+                        if (vuoro == X) {
                             arvo += 700;
+                        }
                     }
                     if (plauta[j][i + 1] != vuoro
                             && plauta[j][i + 2] != vuoro) {
-                        if(vuoro==X)
+                        if (vuoro == X) {
                             arvo += 700;
+                        }
                     }
                     if (plauta[j][i - 1] != vuoro
                             && plauta[j][i - 2] != vuoro) {
-                        if(vuoro==X)
+                        if (vuoro == X) {
                             arvo += 700;
+                        }
                     }
                     if (plauta[j - 1][i] != vuoro && //pysty
                             plauta[j + 1][i] != vuoro) {
-                        if(vuoro==X)
+                        if (vuoro == X) {
                             arvo += 700;
+                        }
                     }
                     if (plauta[j - 1][i] != vuoro
                             && plauta[j - 2][i] != vuoro) {
-                        if(vuoro==X)
+                        if (vuoro == X) {
                             arvo += 700;
+                        }
                     }
                     if (plauta[j + 1][i] != vuoro
                             && plauta[j + 2][i] != vuoro) {
-                        if(vuoro==X)
+                        if (vuoro == X) {
                             arvo += 700;
+                        }
                     }
                 }
             }
