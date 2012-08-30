@@ -412,7 +412,7 @@ public class Peli {
     public int alphabeta(char[][] lauta, int syvyys, int vuoro, int alpha, int beta, boolean min) {
         int rVuoro = vuoro;
         if (syvyys == 0 || vuoro == 9) {
-            int bestPoeng = metodiJokaLaskeeKyseisenLautaTilanteenPisteet2(lauta);
+            int bestPoeng = laskeTilanne(lauta);
             return bestPoeng;
         } else {
             if (min) {
@@ -496,6 +496,19 @@ public class Peli {
 
         return '?';
     }
+    private int laskeTilanne(char[][] plauta) {
+if (metodiJokaLaskeeKyseisenLautaTilanteenPisteet3(plauta) == 'X') {
+return 1;
+}
+if (metodiJokaLaskeeKyseisenLautaTilanteenPisteet3(plauta) == '0') {
+return -1;
+}
+if (metodiJokaLaskeeKyseisenLautaTilanteenPisteet3(plauta) == TYHJA) {
+return 0;
+}
+return -2;
+
+}
 
     private int metodiJokaLaskeeKyseisenLautaTilanteenPisteet(char[][] plauta) {
 
