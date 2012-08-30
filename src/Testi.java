@@ -82,7 +82,7 @@ public class Testi {
     public static void main(String[] args) {
 
         Peli ristinolla = new Peli();
-        ristinolla.pelaa();
+        ristinolla.alphabeta(ristinolla.getLauta(), 3, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
     }
 }

@@ -39,7 +39,7 @@ public class Peli {
             }
         }
         vuoro = 0;
-        pelaaja = 0;
+        pelaaja = O;
     }
 
     public boolean setRuutu(int pysty, int vaaka, char pelaaja) {
@@ -313,6 +313,47 @@ public class Peli {
 
         //  setRuutu(jotain, jatka tästä) 
     }
+        public void pelaa2() {
+        boolean pelaako = true;
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        while (pelaako) {
+
+
+            try {
+
+                boolean kelpaavaSiirto = false;
+                while (!kelpaavaSiirto) {
+                    Sijainti pleissi = new Sijainti(move(pelilauta, vuoro).getPysty(), move(pelilauta, vuoro).getVaaka());
+                    setRuutu(pleissi.getPysty(), pleissi.getVaaka(), 'X');
+                    tulosta();
+                    voittoTarkistus();
+                    // kysytään koordinaatteja kunnes saadaan pelialueella oleva paikka
+                    tulosta();
+                    System.out.println("Pelaaja: " + pelaaja);
+                    System.out.println("Mikä rivi ");
+                    int vaaka = new Integer(in.readLine());
+                    System.out.println("Mikä sarake ");
+                    int pysty = new Integer(in.readLine());
+
+                    kelpaavaSiirto = setRuutu(vaaka, pysty, pelaaja);
+                    if (!pelaako) {
+                        System.out.println("Väärä siirto");
+                    }
+                    voittoTarkistus();
+                    // pelaaja vaihtuu
+
+                }
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
+        //  setRuutu(jotain, jatka tästä) 
+    }
 
     public void voittoTarkistus() {
         if (this.voittiko(vuoro) == 'X' || this.voittiko(vuoro) == 'O') {
@@ -327,137 +368,104 @@ public class Peli {
         }
     }
 
-    public Sijainti minimax(char[][] pelilautsa, int v) {
-        Sijainti[] bestMove = new Sijainti[9];
-        int i;
-        int j;
-        int bestValue = Integer.MAX_VALUE, index = 0;
-        for (i = 0; i < 3; i++) {
-            for (j = 0; j < 3; j++) {
-                if (pelilautsa[i][j] == ' ') {
-                    pelilautsa[i][j] = 'O';
-                    int value = maxSearch(pelilautsa, v);
-                    if (value < bestValue) {
-                        bestValue = value;
-                        index = 0;
-                        bestMove[index] = new Sijainti(i, j);
-                    } else if (value == bestValue) {
-                        bestMove[index++] = new Sijainti(i, j);
+        public Sijainti move(char[][] lauta, int v) {
+        int parasArvo = -10;
+        int arvo;
+        int index = 0;
+        Sijainti[] parasMuuvi = new Sijainti[9];
+        for (int i = 0; i < KOKO; i++) {          // ei tajua 1,1 -> 1,2 -> 0,0 tilannetta oikein
+            for (int j = 0; j < KOKO; j++) {
+                if (lauta[i][j] == TYHJA) {
+                    lauta[i][j] = X;
+                    if (voittiko(v, lauta) == 'X') {
+                        arvo = 1;
+                    } else {
+                       arvo = alphabeta(lauta, syvyys, v, alpha, beta, true);
                     }
-                    pelilautsa[i][j] = ' ';
+                    if (arvo > parasArvo) {
+                        parasArvo = arvo;
+                       for (int u = 0; u < 9; u++) {
+                            parasMuuvi[u] = null;
+                        }
+                        index = 0;
+                        parasMuuvi[index] = new Sijainti(i, j);
+                    } else if (arvo == parasArvo) {
+                        parasMuuvi[index++] = new Sijainti(i, j);
+                    }
+
+                    lauta[i][j] = TYHJA;
                 }
             }
+
+
+
         }
         if (index > 0) {
             index = (int) (Math.random() * index);
         }
 
+        return parasMuuvi[index];
 
-        return bestMove[index];
     }
+    
+        
+        
 
-    public int minSearch(char[][] pelilautsa, int v) {
-        int i;
-        int j;
-        int rVuoro = v;
-        if (voittiko(rVuoro) != TYHJA) {
-            if (voittiko(rVuoro) == X) {
-                return 1;
-            }
-            if (voittiko(rVuoro) == O) {
-                return -1;
-            }
-            return 0;
-        }
-        int bestValue = Integer.MAX_VALUE;
-        for (i = 0; i < 3; i++) {
-            for (j = 0; j < 3; j++) {
-
-                if (pelilautsa[i][j] == ' ') {
-                    pelilautsa[i][j] = 'O';
-                    int value = maxSearch(pelilautsa, v);
-                    if (value < bestValue) {
-                        bestValue = value;
-                    }
-                    pelilautsa[i][j] = ' ';
-                }
-            }
-        }
-
-
-        return bestValue;
-    }
-
-    public int maxSearch(char[][] pelilautsa, int v) {
-        int i;
-        int j;
-        int rVuoro = v;
-        if (voittiko(rVuoro) != TYHJA) {
-            if (voittiko(rVuoro) == X) {
-                return 1;
-            }
-            if (voittiko(rVuoro) == O) {
-                return -1;
-            }
-            return 0;
-        }
-        int bestValue = Integer.MIN_VALUE;
-        for (i = 0; i < 3; i++) {
-            for (j = 0; j < 3; j++) {
-                if (pelilautsa[i][j] == ' ') {
-                    pelilautsa[i][j] = 'X';
-                    int value = minSearch(pelilautsa, v);
-                    if (value > bestValue) {
-                        bestValue = value;
-                    }
-                    pelilautsa[i][j] = ' ';
-                }
-            }
-        }
-        return bestValue;
-    }
-
-    public int alphabeta(char[][] lauta, int syvyys, int alpha, int beta) {
-        if (syvyys == 0) {
-            int bestPoeng = metodiJokaLaskeeKyseisenLautaTilanteenPisteet(lauta);
+    public int alphabeta(char[][] lauta, int syvyys, int vuoro, int alpha, int beta, boolean min) {
+        int rVuoro = vuoro;
+        if (syvyys == 0 || vuoro == 9) {
+            int bestPoeng = metodiJokaLaskeeKyseisenLautaTilanteenPisteet2(lauta);
             return bestPoeng;
         } else {
-            if (syvyys % 2 != 0) {
+            if (min) {
                 for (int i = 0; i < KOKO; i++) {
                     for (int j = 0; j < KOKO; j++) {
                         if (lauta[i][j] == TYHJA) {
-                            lauta[i][j] = X;
+                            lauta[i][j] = O;
+                            rVuoro++;
+                        int preBeta = alphabeta(lauta, syvyys - 1, rVuoro, alpha, beta, false);
+                        lauta[i][j] = TYHJA;
+                        if (preBeta < beta) {
+                            beta = preBeta;
                         }
-                        int preAlpha = alphabeta(lauta, syvyys - 1, alpha, beta);
-                        if (preAlpha > alpha) {
-                            alpha = preAlpha;
-                        }
-                        if (alpha >= beta) {
-                            return beta;
-                        }
+                        if (beta <= alpha)
+                            break;
+                        
+                        
+                        
                     }
                 }
-                return alpha;
+                }return beta;
+
             } else {
                 for (int n = 0; n < KOKO; n++) {
                     for (int m = 0; m < KOKO; m++) {
                         if (lauta[n][m] == TYHJA) {
-                            lauta[n][m] = O;
+                            lauta[n][m] = X;
+                            rVuoro++;
+                        int preAlpha = alphabeta(lauta, syvyys - 1, rVuoro, alpha, beta, false);
+                        lauta[n][m] = TYHJA;
+                        if (preAlpha > alpha) {
+                            alpha = preAlpha;
                         }
-                        int preBeta = alphabeta(lauta, syvyys - 1, alpha, beta);
-                        if (preBeta < beta) {
-                            beta = preBeta;
+                        
+                        if (beta <= beta) {
+                            break;
                         }
-                        if (alpha >= beta) {
-                            return alpha;
-                        }
+                        
                     }
                 }
-                return beta;
-            }
+                }
+                return alpha;
+            
         }
     }
+    }
 
+    private int metodiJokaLaskeeKyseisenLautaTilanteenPisteet2(char[][] plauta) {
+        return (int)(Math.random()*2)-1;
+    }
+    
     private int metodiJokaLaskeeKyseisenLautaTilanteenPisteet(char[][] plauta) {
 
         int arvo = 0;
@@ -470,44 +478,44 @@ public class Peli {
                     if (plauta[j + 2][i - 2] == vuoro && //kulmat
                             plauta[j + 1][i - 1] == vuoro) {
                         if(vuoro==X)
-                            arvo += 1000;
+                            arvo = 1;
                         else
-                            arvo += -1000;
+                            arvo = -1;
                     }
                     if (plauta[j + 1][i - 1] == vuoro
                             && plauta[j + 2][i - 2] == vuoro) {
                         if(vuoro==X)
-                            arvo += 1000;
+                            arvo = 1;
                         else
-                            arvo += -1000;
+                            arvo = -1;
                     }
                     if (plauta[j + 1][i + 1] == vuoro
                             && plauta[j + 2][i + 2] == vuoro) {
                         if(vuoro==X)
-                            arvo += 1000;
+                            arvo = 1;
                         else
-                            arvo += -1000;
+                            arvo = -1;
                     }
                     if (plauta[j - 1][i - 1] == vuoro
                             && plauta[j + 1][i + 1] == vuoro) {
                         if(vuoro==X)
-                            arvo += 1000;
+                            arvo = 1;
                         else
-                            arvo += -1000;;
+                            arvo = -1;
                     }
                     if (plauta[j - 1][i + 1] == vuoro
                             && plauta[j + 1][i - 1] == vuoro) {
                         if(vuoro==X)
-                            arvo += 1000;
+                            arvo = 1;
                         else
-                            arvo += -1000;
+                            arvo = -1;
                     }
                     if (plauta[j][i - 1] == vuoro && //vaaka
                             plauta[j][i + 1] == vuoro) {
                         if(vuoro==X)
-                            arvo += 1000;
+                            arvo = 1;
                         else
-                            arvo += -1000;
+                            arvo = -1;
                     }
                     if (plauta[j][i + 1] == vuoro
                             && plauta[j][i + 2] == vuoro) {
@@ -519,87 +527,87 @@ public class Peli {
                     if (plauta[j][i - 1] == vuoro
                             && plauta[j][i - 2] == vuoro) {
                         if(vuoro==X)
-                            arvo += 1000;
+                            arvo = 1;
                         else
-                            arvo += -1000;
+                            arvo = -1;
                     }
                     if (plauta[j - 1][i] == vuoro && //pysty
                             plauta[j + 1][i] == vuoro) {
                         if(vuoro==X)
-                            arvo += 1000;
+                            arvo = 1;
                         else
-                            arvo += -1000;
+                            arvo = -1;
                     }
                     if (plauta[j - 1][i] == vuoro
                             && plauta[j - 2][i] == vuoro) {
                         if(vuoro==X)
-                            arvo += 1000;
+                            arvo = 1;
                         else
-                            arvo += -1000;
+                            arvo = -1;
                     }
                     if (plauta[j + 1][i] == vuoro
                             && plauta[j + 2][i] == vuoro) {
                         if(vuoro==X)
-                            arvo += 1000;
+                            arvo = 1;
                         else
-                            arvo += -1000;
+                            arvo = -1;
                     }
                     //kun koneella vuoro ja vastustajalla paikkoja
 
                     if (plauta[j + 2][i - 2] != vuoro && //kulmat
                             plauta[j + 1][i - 1] != vuoro) {
                         if(vuoro==X)
-                            arvo += 700;
+                            arvo = 0;
                     }
                     if (plauta[j + 1][i - 1] != vuoro
                             && plauta[j + 2][i - 2] != vuoro) {
                         if(vuoro==X)
-                            arvo += 700;
+                            arvo = 0;
                     }
                     if (plauta[j + 1][i + 1] != vuoro
                             && plauta[j + 2][i + 2] != vuoro) {
                         if(vuoro==X)
-                            arvo += 700;
+                            arvo = 0;
                     }
                     if (plauta[j - 1][i - 1] != vuoro
                             && plauta[j + 1][i + 1] != vuoro) {
                         if(vuoro==X)
-                            arvo += 700;
+                            arvo = 0;
                     }
                     if (plauta[j - 1][i + 1] != vuoro
                             && plauta[j + 1][i - 1] != vuoro) {
                         if(vuoro==X)
-                            arvo += 700;
+                            arvo = 0;
                     }
                     if (plauta[j][i - 1] != vuoro && //vaaka
                             plauta[j][i + 1] != vuoro) {
                         if(vuoro==X)
-                            arvo += 700;
+                            arvo = 0;
                     }
                     if (plauta[j][i + 1] != vuoro
                             && plauta[j][i + 2] != vuoro) {
                         if(vuoro==X)
-                            arvo += 700;
+                            arvo = 0;
                     }
                     if (plauta[j][i - 1] != vuoro
                             && plauta[j][i - 2] != vuoro) {
                         if(vuoro==X)
-                            arvo += 700;
+                            arvo = 0;
                     }
                     if (plauta[j - 1][i] != vuoro && //pysty
                             plauta[j + 1][i] != vuoro) {
                         if(vuoro==X)
-                            arvo += 700;
+                            arvo = 0;
                     }
                     if (plauta[j - 1][i] != vuoro
                             && plauta[j - 2][i] != vuoro) {
                         if(vuoro==X)
-                            arvo += 700;
+                            arvo = 0;
                     }
                     if (plauta[j + 1][i] != vuoro
                             && plauta[j + 2][i] != vuoro) {
                         if(vuoro==X)
-                            arvo += 700;
+                            arvo = 0;
                     }
                 }
             }
